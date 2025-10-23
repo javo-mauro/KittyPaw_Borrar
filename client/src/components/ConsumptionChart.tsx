@@ -1,20 +1,20 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface ConsumptionChartProps {
-  data?: Array<{ name: string; [key: string]: number | string }>;
+  data?: Array<{ name: string; value: number }>;
 }
 
 export default function ConsumptionChart({ data }: ConsumptionChartProps) {
   //todo: remove mock functionality
   const mockData = data || [
-    { name: 'Lun', Luna: 120, Max: 280 },
-    { name: 'Mar', Luna: 110, Max: 270 },
-    { name: 'Mié', Luna: 130, Max: 290 },
-    { name: 'Jue', Luna: 125, Max: 285 },
-    { name: 'Vie', Luna: 115, Max: 275 },
-    { name: 'Sáb', Luna: 100, Max: 270 },
-    { name: 'Dom', Luna: 95, Max: 265 },
+    { name: 'Lun', value: 200 },
+    { name: 'Mar', value: 180 },
+    { name: 'Mié', value: 220 },
+    { name: 'Jue', value: 210 },
+    { name: 'Vie', value: 190 },
+    { name: 'Sáb', value: 170 },
+    { name: 'Dom', value: 160 },
   ];
 
   return (
@@ -30,9 +30,7 @@ export default function ConsumptionChart({ data }: ConsumptionChartProps) {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Legend />
-            <Bar dataKey="Luna" fill="hsl(var(--chart-1))" name="Luna (Gato)" />
-            <Bar dataKey="Max" fill="hsl(var(--chart-3))" name="Max (Perro)" />
+            <Bar dataKey="value" fill="hsl(var(--chart-1))" />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
