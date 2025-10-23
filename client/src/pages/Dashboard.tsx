@@ -19,25 +19,25 @@ export default function Dashboard() {
         <StatWidget
           title="Dispositivos Activos"
           value="3"
-          icon="📱"
+          icon={Home}
           variant="device"
         />
         <StatWidget
           title="Mascotas"
           value="2"
-          icon="🐾"
+          icon={Users}
           variant="info"
         />
         <StatWidget
           title="Alertas Hoy"
           value="5"
-          icon="🔔"
+          icon={AlertTriangle}
           variant="data"
         />
         <StatWidget
           title="Nivel de Comida"
           value="75%"
-          icon="🍖"
+          icon={Activity}
           variant="info"
         />
       </div>
