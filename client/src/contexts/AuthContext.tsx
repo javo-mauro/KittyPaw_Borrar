@@ -4,9 +4,9 @@ interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
   user: { username: string; email: string } | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
-  register: (username: string, email: string, password: string) => Promise<void>;
+  register: (username: string, email: string, password: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,6 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(mockUser);
     setIsAuthenticated(true);
     localStorage.setItem('kitty_auth', JSON.stringify(mockUser));
+    return true;
   };
 
   const register = async (username: string, email: string, password: string) => {
@@ -43,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(mockUser);
     setIsAuthenticated(true);
     localStorage.setItem('kitty_auth', JSON.stringify(mockUser));
+    return true;
   };
 
   const logout = () => {

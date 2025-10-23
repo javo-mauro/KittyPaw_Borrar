@@ -34,11 +34,15 @@ export default function Register() {
   });
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-    setIsLoading(true); // Set loading state before API call
+    setIsLoading(true);
     try {
-      await register(data.username, data.email, data.password);
-      toast({ title: '¡Cuenta creada!', description: 'Tu cuenta ha sido creada exitosamente.' });
-      setLocation('/dashboard');
+      const success = await register(data.username, data.email, data.password);
+      if (success) {
+        toast({ title: '¡Bienvenido!', description: 'Cuenta creada exitosamente.' });
+        setLocation('/dashboard');
+      } else {
+        toast({ title: 'Error', description: 'No se pudo crear la cuenta', variant: 'destructive' });
+      }
     } catch (error) {
       console.error("Registration error:", error); // Log the error for debugging
       let errorMessage = 'No se pudo crear la cuenta';
