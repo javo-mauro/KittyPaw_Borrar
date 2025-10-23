@@ -1,67 +1,65 @@
 import StatWidget from '@/components/StatWidget';
 import DeviceCard from '@/components/DeviceCard';
 import ActivityChart from '@/components/ActivityChart';
+import ConsumptionChart from '@/components/ConsumptionChart'; // Assuming ConsumptionChart is a new import based on changes
 import { Activity, Home, AlertTriangle, Users } from 'lucide-react';
-import feederImage from '@assets/generated_images/Smart_feeder_device_6415df93.png';
+import feederImage from '@assets/generated_images/Smart_feeder_device_6415df93.png'; // This import is not used in the provided changes, but kept for completeness if it was intended.
 
 export default function Dashboard() {
-  //todo: remove mock functionality
   return (
-    <div className="space-y-6" data-testid="page-dashboard">
-      <h1 className="titulo text-3xl">Dashboard</h1>
+    <div className="p-6 lg:p-8 space-y-8 max-w-screen-2xl mx-auto">
+      <div className="space-y-2">
+        <h2 className="text-4xl font-bold titulo">Dashboard</h2>
+        <p className="text-lg text-muted-foreground">
+          Resumen de tu sistema de monitoreo de mascotas
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         <StatWidget
-          title="Mascotas Activas"
+          title="Dispositivos Activos"
           value="3"
-          description="Todas saludables"
-          icon={Activity}
-          variant="data"
-        />
-        <StatWidget
-          title="Dispositivos"
-          value="5"
-          description="4 activos"
-          icon={Home}
+          icon="📱"
           variant="device"
         />
         <StatWidget
-          title="Alertas"
+          title="Mascotas"
           value="2"
-          description="Requieren atención"
-          icon={AlertTriangle}
+          icon="🐾"
           variant="info"
         />
         <StatWidget
-          title="Usuarios"
-          value="1"
-          description="Plan Plus"
-          icon={Users}
+          title="Alertas Hoy"
+          value="5"
+          icon="🔔"
           variant="data"
+        />
+        <StatWidget
+          title="Nivel de Comida"
+          value="75%"
+          icon="🍖"
+          variant="info"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ActivityChart />
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold">Dispositivos Recientes</h2>
-          <div className="space-y-4">
-            <DeviceCard
-              name="Comedero Principal"
-              type="Dispensador de Comida"
-              status="active"
-              lastUpdate="Hace 5 minutos"
-              batteryLevel={85}
-              imageUrl={feederImage}
-            />
-            <DeviceCard
-              name="Arenero Inteligente"
-              type="Monitor de Arenero"
-              status="warning"
-              lastUpdate="Hace 2 horas"
-              batteryLevel={45}
-            />
-          </div>
+        <ConsumptionChart />
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-2xl font-bold">Dispositivos Recientes</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+          <DeviceCard
+            name="Comedero Principal"
+            type="Feeder"
+            status="online"
+          />
+          <DeviceCard
+            name="Arenero Automático"
+            type="Litter Box"
+            status="online"
+          />
         </div>
       </div>
     </div>

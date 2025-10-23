@@ -7,82 +7,120 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import logo from '@assets/generated_images/KittyPaw_app_logo_icon_4a2bd296.png';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
+const loginSchema = z.object({
+  username: z.string().min(1, 'El nombre de usuario es requerido'),
+  password: z.string().min(1, 'La contraseña es requerida'),
+});
 
 export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
 
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    setIsLoading(true);
     try {
-      await login(username, password);
-      toast({ title: '¡Bienvenido!', description: 'Has iniciado sesión correctamente.' });
-      setLocation('/dashboard');
+      const success = await login(data.username, data.password);
+      if (success) {
+        toast({ title: '¡Bienvenido!', description: 'Has iniciado sesión correctamente.' });
+        setLocation('/dashboard');
+      } else {
+        toast({ title: 'Error', description: 'Credenciales inválidas', variant: 'destructive' });
+      }
     } catch (error) {
-      toast({ title: 'Error', description: 'Credenciales inválidas', variant: 'destructive' });
+      toast({ title: 'Error', description: 'Ocurrió un error al iniciar sesión', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <img src={logo} alt="KittyPaw" className="h-20 w-20" />
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'hsl(var(--background))' }}>
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="space-y-3 text-center pb-4">
+          <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+            <img src={logo} alt="KittyPaw" className="h-full w-full object-cover rounded-full" />
           </div>
-          <CardTitle className="titulo text-3xl">KittyPaw</CardTitle>
-          <CardDescription>Inicia sesión en tu cuenta</CardDescription>
+          <CardTitle className="text-3xl titulo">
+            KittyPaw
+          </CardTitle>
+          <CardDescription className="text-base">
+            Ingresa tus credenciales para acceder
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="username">Usuario</Label>
-              <Input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="tu_usuario"
-                data-testid="input-username"
-                required
+        <CardContent className="px-6 pb-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Usuario</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="tu_usuario" 
+                        className="h-10" 
+                        {...field} 
+                        data-testid="input-username"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Contraseña</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                data-testid="input-password"
-                required
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Contraseña</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="password" 
+                        placeholder="••••••••" 
+                        className="h-10"
+                        {...field} 
+                        data-testid="input-password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <Button
-              type="submit"
-              className="w-full btn-primary"
-              disabled={isLoading}
-              data-testid="button-login"
-            >
-              {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-            </Button>
-          </form>
-          <div className="mt-4 text-center text-sm">
-            <span className="text-muted-foreground">¿No tienes cuenta? </span>
-            <a href="/register" className="text-primary hover:underline" data-testid="link-register">
-              Regístrate
+              <Button
+                type="submit"
+                className="w-full h-10 text-base mt-6 btn-primary"
+                disabled={isLoading}
+                data-testid="button-login"
+              >
+                {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter className="flex flex-col space-y-2 px-6 pb-6">
+          <div className="text-sm text-muted-foreground text-center">
+            ¿No tienes cuenta?{' '}
+            <a href="/register" className="text-primary hover:underline font-medium" data-testid="link-register">
+              Regístrate aquí
             </a>
           </div>
-        </CardContent>
+        </CardFooter>
       </Card>
     </div>
   );
