@@ -1,20 +1,20 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 interface ActivityChartProps {
-  data?: Array<{ name: string; value: number }>;
+  data?: Array<{ name: string; [key: string]: number | string }>;
 }
 
 export default function ActivityChart({ data }: ActivityChartProps) {
   //todo: remove mock functionality
   const mockData = data || [
-    { name: 'Lun', value: 65 },
-    { name: 'Mar', value: 59 },
-    { name: 'Mié', value: 80 },
-    { name: 'Jue', value: 81 },
-    { name: 'Vie', value: 56 },
-    { name: 'Sáb', value: 55 },
-    { name: 'Dom', value: 40 },
+    { name: 'Lun', Luna: 65, Max: 45 },
+    { name: 'Mar', Luna: 59, Max: 52 },
+    { name: 'Mié', Luna: 80, Max: 68 },
+    { name: 'Jue', Luna: 81, Max: 72 },
+    { name: 'Vie', Luna: 56, Max: 48 },
+    { name: 'Sáb', Luna: 55, Max: 60 },
+    { name: 'Dom', Luna: 40, Max: 38 },
   ];
 
   return (
@@ -30,7 +30,9 @@ export default function ActivityChart({ data }: ActivityChartProps) {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="hsl(var(--chart-3))" strokeWidth={2} />
+            <Legend />
+            <Line type="monotone" dataKey="Luna" stroke="hsl(var(--chart-1))" strokeWidth={2} name="Luna (Gato)" />
+            <Line type="monotone" dataKey="Max" stroke="hsl(var(--chart-3))" strokeWidth={2} name="Max (Perro)" />
           </LineChart>
         </ResponsiveContainer>
       </CardContent>
