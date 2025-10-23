@@ -52,13 +52,17 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
           <DeviceCard
             name="Comedero Principal"
-            type="Feeder"
-            status="online"
+            type="Dispensador de Comida"
+            status="active"
+            lastUpdate="Hace 5 minutos"
+            batteryLevel={85}
           />
           <DeviceCard
             name="Arenero Automático"
-            type="Litter Box"
-            status="online"
+            type="Monitor de Arenero"
+            status="active"
+            lastUpdate="Hace 10 minutos"
+            batteryLevel={92}
           />
         </div>
       </div>
